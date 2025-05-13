@@ -3,7 +3,7 @@ from PySide6.QtWidgets import (
     QPushButton
 )
 from widgets.line_edit import IntLineEdit
-
+from controllers.button_controller import ExitButtonController
 
 class LineEditLayout(QFormLayout):
     def __init__(self):
@@ -22,6 +22,8 @@ class ButtonLayout(QHBoxLayout):
         super().__init__()
 
         exit_button = QPushButton("Выйти")
+        self.exit_controller = ExitButtonController()
+        self.exit_controller.connect_to_button(exit_button)
         arrange_button = QPushButton("Расставить фигуры")
         render_button = QPushButton("Отрисовать доску")
 
