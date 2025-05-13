@@ -4,16 +4,22 @@ from PySide6.QtWidgets import (
 )
 from widgets.line_edit import IntLineEdit
 from controllers.button_controller import ExitButtonController
+from controllers.line_edit_controller import IntLineEditController
+
 
 class LineEditLayout(QFormLayout):
     def __init__(self):
         super().__init__()
 
-        lineEdit_for_n = IntLineEdit()
-        lineEdit_for_k = IntLineEdit()
+        n_line_edit = IntLineEdit()
+        self.n_line_edit_controller = IntLineEditController()
+        self.n_line_edit_controller.connect_to_line_edit(n_line_edit)
+        k_line_edit = IntLineEdit()
+        self.k_line_edit_controller = IntLineEditController()
+        self.k_line_edit_controller.connect_to_line_edit(k_line_edit)
 
-        self.addRow("Введите размер доски N:", lineEdit_for_n)
-        self.addRow("Введите кол-во фигур, которые нужно расставить L:", lineEdit_for_k)
+        self.addRow("Введите размер доски N:", n_line_edit)
+        self.addRow("Введите кол-во фигур, которые нужно расставить L:", k_line_edit)
 
 
 
