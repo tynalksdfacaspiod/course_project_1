@@ -15,13 +15,14 @@ class AbstractLineEditController(ABC):
         self.line_edit.textChanged.connect(self.on_text_changed)
 
 
+
 class IntLineEditController(AbstractLineEditController):
     def __init__(self):
         super().__init__()
 
     def on_text_changed(self, text):
         if text:
-            self.line_edit.isEmpty = False
+            self.line_edit.is_empty = False
         else:
-            self.line_edit.isEmpty = True
-        print(self.line_edit.isEmpty)
+            self.line_edit.is_empty = True
+        print(self.line_edit.is_empty)
