@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from PySide6.QtCore import QCoreApplication
 
 
+from windows.arrange_window import ArrangeWindow
+
 class AbstractButtonController(ABC):
     def __init__(self):
         super().__init__()
@@ -20,3 +22,13 @@ class ExitButtonController(AbstractButtonController):
 
     def handle_click(self):
         QCoreApplication.quit()
+
+
+
+class ArrangeButtonController(AbstractButtonController):
+    def __init__(self):
+        super().__init__()
+
+    def handle_click(self):
+        arrange_window = ArrangeWindow()
+        arrange_window.exec()

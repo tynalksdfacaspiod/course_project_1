@@ -1,5 +1,4 @@
 from PySide6.QtWidgets import QMainWindow, QWidget
-from PySide6.QtCore import QTimer
 from layouts.main_window_layouts import MainLayout
 
 

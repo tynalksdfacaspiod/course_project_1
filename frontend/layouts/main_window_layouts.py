@@ -5,8 +5,9 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import QTimer
 
 from widgets.line_edit import IntLineEdit
-from controllers.button_controller import ExitButtonController
+from controllers.button_controller import ExitButtonController, ArrangeButtonController
 from controllers.line_edit_controller import IntLineEditController
+
 
 
 class LineEditLayout(QFormLayout):
@@ -35,11 +36,13 @@ class ButtonLayout(QHBoxLayout):
         self.buttons = set()
 
         exit_button = QPushButton("Выйти")
-        self.exit_controller = ExitButtonController()
-        self.exit_controller.connect_to_button(exit_button)
+        self.exit_button_controller = ExitButtonController()
+        self.exit_button_controller.connect_to_button(exit_button)
 
         arrange_button = QPushButton("Расставить фигуры")
         arrange_button.setEnabled(False)
+        self.arrange_button_controller = ArrangeButtonController()
+        self.arrange_button_controller.connect_to_button(arrange_button)
         self.buttons.add(arrange_button)
 
         render_button = QPushButton("Отрисовать доску")
@@ -80,24 +83,3 @@ class MainLayout(QVBoxLayout):
             if line_edit.is_empty:
                 return False
         return True
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
