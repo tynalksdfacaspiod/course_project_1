@@ -7,7 +7,7 @@ from PySide6.QtCore import QTimer
 from widgets.line_edit import IntLineEdit
 from controllers.button_controller import ExitButtonController, ArrangeButtonController
 from controllers.line_edit_controller import IntLineEditController
-
+from windows.arrange_window import ArrangeWindow
 
 
 class LineEditLayout(QFormLayout):
@@ -41,7 +41,7 @@ class ButtonLayout(QHBoxLayout):
 
         arrange_button = QPushButton("Расставить фигуры")
         arrange_button.setEnabled(False)
-        self.arrange_button_controller = ArrangeButtonController()
+        self.arrange_button_controller = ArrangeButtonController(arrange_window=ArrangeWindow())
         self.arrange_button_controller.connect_to_button(arrange_button)
         self.buttons.add(arrange_button)
 

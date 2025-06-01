@@ -8,5 +8,5 @@ class ArrangeWindow(QDialog):
         
         self.setWindowTitle("Окно расстановки фигур")
         self.setFixedSize(1000, 700)
-        self.setLayout(ArrangeWindowLayout())
+        self.setLayout(ArrangeWindowLayout(parent_window=self))
         
