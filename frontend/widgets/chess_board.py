@@ -1,41 +1,67 @@
 from PySide6.QtWidgets import (
-    QGraphicsRectItem, QGraphicsView, QGraphicsScene
+    QGraphicsRectItem, QGraphicsView, QGraphicsScene, QGraphicsItem
 )
 
-from PySide6.QtGui import QBrush, QColor
- 
+from PySide6.QtCore import Qt, QPointF
+from PySide6.QtGui import QBrush, QColor, QPen
+
+class ChessSquare(QGraphicsRectItem):
+    def __init__(self, row, col, size, color):
+        super().__init__(0, 0, size, size)
+        self.row = row
+        self.col = col
+        self.default_color = color
+        self.setPos(col * size, row * size)
+        self.setBrush(QBrush(color))
+        self.setPen(QPen(Qt.NoPen))
+        
+        
+        self.setAcceptHoverEvents(True)
+        self.setFlag(QGraphicsItem.ItemIsSelectable, True)
+    
+    def mouse_press_event(self, event):
+        """Обработка клика на клетке"""
+
+        if event.button() == Qt.LeftButton:
+            self.setBrush(QBrush(QColor("lime")))  
+            event.accept()
+
+        elif event.button() == Qt.RightButton:
+            self.setBrush(QBrush(self.default_color))
+            event.accept()
+
+        else:
+            super().mouse_press_event(event)
+    
+    def hover_enter_event(self, event):
+        """При наведении курсора"""
+        self.setPen(QPen(QColor(255, 255, 0), 2))  
+        super().hover_enter_event(event)
+    
+    def hover_leave_event(self, event):
+        """Когда курсор уходит"""
+        self.setPen(QPen(Qt.NoPen))
+        super().hoverLeaveEvent(event)
 
 
 class ChessBoard(QGraphicsView):
-    def __init__(self):
+    def __init__(self, n):
         super().__init__()
-
+        self.n = n
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
-        self.setFixedSize(500, 500)
-        self.setSceneRect(0, 0, 400, 400)
+        self.square_size = 30
+        self.setFixedSize((self.n+1)*self.square_size, (self.n+1)*self.square_size)
+        self.setSceneRect(0, 0, self.n*self.square_size, self.n*self.square_size)
+        
         self.create_board()
-
+    
     def create_board(self):
         self.squares = []
-        for row in range(8):
-            for col in range(8):
-                square = QGraphicsRectItem(col * 50, row * 50, 50, 50)
+        
+        for row in range(self.n):
+            for col in range(self.n):
                 color = QColor(240, 217, 181) if (row + col) % 2 else QColor(181, 136, 99)
-                square.setBrush(QBrush(color))
-                square.setData(0, (row, col))
-                square.setAcceptHoverEvents(True)
+                square = ChessSquare(row, col, self.square_size, color)
                 self.scene.addItem(square)
                 self.squares.append(square)
-
-
-        self.scene.selectionChanged.connect(self.on_square_clicked)
-
-    
-    def on_square_clicked(self):
-        items = self.scene.selectedItems()
-        if items:
-            item = items[0]
-            row, col = item.data(0)
-            print(f"{row}, {col}")
-
