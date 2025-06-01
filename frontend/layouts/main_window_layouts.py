@@ -5,8 +5,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import QTimer
 
 from widgets.line_edit import IntLineEdit
-from controllers.button_controller import ExitButtonController, ArrangeButtonController
-from controllers.line_edit_controller import IntLineEditController
+from controllers.main_window.button_controller import ExitButtonController, ArrangeButtonController
+from controllers.main_window.line_edit_controller import IntLineEditController
 from windows.arrange_window import ArrangeWindow
 
 
@@ -34,8 +34,9 @@ class LineEditLayout(QFormLayout):
 
 
 class ButtonLayout(QHBoxLayout):
-    def __init__(self):
+    def __init__(self, parent_window=None):
         super().__init__()
+        self.parent_window = parent_window
         self.buttons = {
             "arrange_button": None,
             "render_button": None
@@ -43,7 +44,7 @@ class ButtonLayout(QHBoxLayout):
 
         arrange_button = QPushButton("Расставить фигуры")
         arrange_button.setEnabled(False)
-        self.arrange_button_controller = ArrangeButtonController(arrange_window=ArrangeWindow())
+        self.arrange_button_controller = ArrangeButtonController(self.parent_window)
         self.arrange_button_controller.connect_to_button(arrange_button)
         self.buttons["arrange_button"] = arrange_button
 
@@ -67,7 +68,7 @@ class MainLayout(QVBoxLayout):
         self.parent_window = parent_window
 
         self.line_edit_layout = LineEditLayout()
-        self.button_layout = ButtonLayout()
+        self.button_layout = ButtonLayout(self.parent_window)
         
         self.addLayout(self.line_edit_layout)
         self.addLayout(self.button_layout)

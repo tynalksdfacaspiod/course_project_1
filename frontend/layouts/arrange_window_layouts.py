@@ -4,7 +4,8 @@ from PySide6.QtWidgets import (
 )
 
 from widgets.chess_board import ChessBoard
-from controllers.button_controller import ConfirmButtonController, CloseButtonController
+from controllers.arrange_window.button_controller import ConfirmButtonController, CloseButtonController
+
 
 class ButtonsLayout(QHBoxLayout):
     def __init__(self, parent_window=None):
@@ -28,6 +29,6 @@ class ArrangeWindowLayout(QVBoxLayout):
         super().__init__()
         self.parent_window = parent_window
 
-        self.chess_board = ChessBoard()
+        self.chess_board = ChessBoard(self.parent_window.n)
         self.addWidget(self.chess_board)
         self.addLayout(ButtonsLayout(parent_window))
