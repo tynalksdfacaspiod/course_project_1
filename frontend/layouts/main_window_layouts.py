@@ -15,7 +15,7 @@ class LineEditLayout(QFormLayout):
         super().__init__()
         self.line_edits = {
             "n_line_edit": None,
-            "k_line_edit": None
+            "l_line_edit": None
         }
 
         n_line_edit = IntLineEdit()
@@ -23,13 +23,13 @@ class LineEditLayout(QFormLayout):
         self.n_line_edit_controller.connect_to_line_edit(n_line_edit)
         self.line_edits["n_line_edit"] = n_line_edit
 
-        k_line_edit = IntLineEdit()
-        self.k_line_edit_controller = IntLineEditController()
-        self.k_line_edit_controller.connect_to_line_edit(k_line_edit)
-        self.line_edits["k_line_edit"] = k_line_edit
+        l_line_edit = IntLineEdit()
+        self.l_line_edit_controller = IntLineEditController()
+        self.l_line_edit_controller.connect_to_line_edit(l_line_edit)
+        self.line_edits["l_line_edit"] = l_line_edit
 
         self.addRow("Введите размер доски N:", n_line_edit)
-        self.addRow("Введите кол-во фигур, которые нужно расставить L:", k_line_edit)
+        self.addRow("Введите кол-во фигур, которые нужно расставить L:", l_line_edit)
 
 
 
@@ -41,10 +41,6 @@ class ButtonLayout(QHBoxLayout):
             "render_button": None
         }
 
-        exit_button = QPushButton("Выйти")
-        self.exit_button_controller = ExitButtonController()
-        self.exit_button_controller.connect_to_button(exit_button)
-
         arrange_button = QPushButton("Расставить фигуры")
         arrange_button.setEnabled(False)
         self.arrange_button_controller = ArrangeButtonController(arrange_window=ArrangeWindow())
@@ -55,9 +51,13 @@ class ButtonLayout(QHBoxLayout):
         render_button.setEnabled(False)
         self.buttons["render_button"] = render_button
 
-        self.addWidget(exit_button)
+        exit_button = QPushButton("Выйти")
+        self.exit_button_controller = ExitButtonController()
+        self.exit_button_controller.connect_to_button(exit_button)
+
         self.addWidget(arrange_button)
         self.addWidget(render_button)
+        self.addWidget(exit_button)
 
 
 
@@ -80,27 +80,15 @@ class MainLayout(QVBoxLayout):
     
 
     def _toggle_buttons(self):
-        value_n = self.parent_window.values["n"]
-        value_k = self.parent_window.values["k"]
-
-        arrange_button = self.button_layout.buttons["arrange_button"]
-        render_button = self.button_layout.buttons["render_button"]
-
-        if value_n != 0:
-            if value_k == 0:
-                arrange_button.setEnabled(False)
-                render_button.setEnabled(True)
+        for button in self.button_layout.buttons.values():
+            if self.parent_window.values["n"] > 0 and self.parent_window.values["l"] > 0:
+                button.setEnabled(True)
             else:
-                arrange_button.setEnabled(True)
-                render_button.setEnabled(True)
-        else:
-            arrange_button.setEnabled(False)
-            render_button.setEnabled(False)
-    
+                button.setEnabled(False)
 
     def _set_values(self):
         n_line_edit_value = self.line_edit_layout.line_edits["n_line_edit"].text()
-        k_line_edit_value = self.line_edit_layout.line_edits["k_line_edit"].text()
+        l_line_edit_value = self.line_edit_layout.line_edits["l_line_edit"].text()
 
         if n_line_edit_value:
             self.parent_window.values["n"] = int(n_line_edit_value)
@@ -108,7 +96,7 @@ class MainLayout(QVBoxLayout):
             self.parent_window.values["n"] = 0
             
 
-        if k_line_edit_value:
-            self.parent_window.values["k"] = int(k_line_edit_value)
+        if l_line_edit_value:
+            self.parent_window.values["l"] = int(l_line_edit_value)
         else:
-            self.parent_window.values["k"] = 0
+            self.parent_window.values["l"] = 0
