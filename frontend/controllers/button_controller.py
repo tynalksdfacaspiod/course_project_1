@@ -30,6 +30,7 @@ class ArrangeButtonController(AbstractButtonController):
         self.arrange_window = arrange_window
 
     def handle_click(self):
+
         self.arrange_window.exec()
 
 

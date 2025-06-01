@@ -25,4 +25,3 @@ class IntLineEditController(AbstractLineEditController):
             self.line_edit.is_empty = False
         else:
             self.line_edit.is_empty = True
-        print(self.line_edit.is_empty)

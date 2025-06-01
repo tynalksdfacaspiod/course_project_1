@@ -6,8 +6,21 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.values = {
+            "n": 0,
+            "k": 0
+        }
+
         self.setWindowTitle("Chess")
 
         central_widget = QWidget()
-        central_widget.setLayout(MainLayout())
+        central_widget.setLayout(MainLayout(self))
         self.setCentralWidget(central_widget)
+
+
+    def set_n(value):
+        self.values[0] = value
+
+
+    def set_k(value):
+        self.values[1] = value
