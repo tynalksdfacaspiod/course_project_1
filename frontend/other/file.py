@@ -1,5 +1,5 @@
 import json 
-import os
+
 
 def write_input_file(values: dict):
     with open("backend/data/input.json", "w") as fp:
