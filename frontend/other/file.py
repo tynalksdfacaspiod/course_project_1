@@ -1,5 +1,11 @@
 import json 
-import os.path
+import os
+
+def cleanup():
+    catalog_path = "backend/data"
+    files = os.listdir(catalog_path)
+    for file in files:
+        os.remove(catalog_path + "/" + file)
 
 
 def write_input_file(values: dict):
