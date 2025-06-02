@@ -23,10 +23,10 @@ class ChessSquare(QGraphicsRectItem):
         self.setBrush(QBrush(self.default_color))
         self.setPen(QPen(Qt.NoPen))
         
-        self.setClickable(True)
+        self.set_clickable(True)
 
      
-    def setClickable(self, enabled):
+    def set_clickable(self, enabled):
         self._clickable = enabled
         self.setAcceptHoverEvents(enabled)
         self.setFlag(QGraphicsItem.ItemIsSelectable, enabled)
@@ -106,11 +106,11 @@ class ChessBoard(QGraphicsView):
         for move in self.moves:
             square = self.squares[move[0]*self.N + move[1]]
             square.setBrush(QBrush(QColor(255, 51, 51)))
-            square.setClickable(False)
+            square.set_clickable(False)
 
     
     def unset_moves(self):
         for square in self.squares:
             if (square.y, square.x) not in self.moves and (square.y, square.x) not in self.princesses.keys():
                 square.setBrush(QBrush(square.default_color))
-                square.setClickable(True)
+                square.set_clickable(True)
