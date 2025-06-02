@@ -72,10 +72,6 @@ class ChessBoard(QGraphicsView):
         super().__init__()
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
-        self.square_size = 50
-
-        self.setFixedSize((self.n+1)*self.square_size, (self.n+1)*self.square_size)
-        self.setSceneRect(0, 0, self.n*self.square_size, self.n*self.square_size)
 
         self.N = N
         self.square_size = 30
