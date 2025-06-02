@@ -12,14 +12,14 @@ from backend.princess import Princess
 
 
 class ChessSquare(QGraphicsRectItem):
-    def __init__(self, board, y, x, size, color):
+    def __init__(self, board, x, y, size, color):
         super().__init__(0, 0, size, size)
         self.board = board
-        self.y = y
         self.x = x
+        self.y = y
         self.default_color = color
 
-        self.setPos(y * size, x * size)
+        self.setPos(self.x * size, self.y * size)
         self.setBrush(QBrush(self.default_color))
         self.setPen(QPen(Qt.NoPen))
         
@@ -33,15 +33,15 @@ class ChessSquare(QGraphicsRectItem):
 
 
     def _handle_left_button(self):
-        self.board.princesses[(self.y,self.x)] = Princess(self.board, self.y, self.x)
+        self.board.princesses[(self.x,self.y)] = Princess(self.board, self.x, self.y)
         self.board.set_moves()
         self.board.values["K"] += 1
         self.setBrush(QBrush(QColor("lime")))
 
 
     def _handle_right_button(self):
-        if (self.y, self.x) in self.board.princesses.keys():
-            self.board.princesses.pop((self.y,self.x))
+        if (self.x, self.y) in self.board.princesses.keys():
+            self.board.princesses.pop((self.x,self.y))
             self.board.unset_moves()
             self.board.values["K"] -= 1
         self.setBrush(QBrush(self.default_color))
@@ -102,8 +102,8 @@ class ChessBoard(QGraphicsView):
         
         for y in range(self.N):
             for x in range(self.N):
-                color = QColor(240, 217, 181) if (y + x) % 2 else QColor(181, 136, 99)
-                square = ChessSquare(self, y, x, self.square_size, color)
+                color = QColor(240, 217, 181) if (x+y) % 2 else QColor(181, 136, 99)
+                square = ChessSquare(self, x, y, self.square_size, color)
                 self.scene.addItem(square)
                 self.squares.append(square)
 
@@ -116,13 +116,21 @@ class ChessBoard(QGraphicsView):
 
     def set_moves(self):
         for move in self.moves:
-            square = self.squares[move[0]*self.N + move[1]]
+            square = self.squares[move[0] + move[1]*self.N]
             square.setBrush(QBrush(QColor(255, 51, 51)))
             square.set_clickable(False)
 
     
     def unset_moves(self):
         for square in self.squares:
-            if (square.y, square.x) not in self.moves and (square.y, square.x) not in self.princesses.keys():
+            if (square.x, square.y) not in self.moves and (square.x, square.y) not in self.princesses.keys():
                 square.setBrush(QBrush(square.default_color))
                 square.set_clickable(True)
+
+
+    def get_moves_coords(self):
+        return tuple(self.moves)
+
+
+    def get_princesses_coords(self):
+        return tuple(self.princesses.keys())
