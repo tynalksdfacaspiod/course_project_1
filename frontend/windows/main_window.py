@@ -8,7 +8,8 @@ class MainWindow(QMainWindow):
 
         self.values = {
             "N": 0,
-            "L": 0
+            "L": 0,
+            "K": 0
         }
 
         self.setWindowTitle("Chess")

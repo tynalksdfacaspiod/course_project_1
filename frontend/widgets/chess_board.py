@@ -32,6 +32,21 @@ class ChessSquare(QGraphicsRectItem):
         self.setFlag(QGraphicsItem.ItemIsSelectable, enabled)
 
 
+    def _handle_left_button(self):
+        self.board.princesses[(self.y,self.x)] = Princess(self.board, self.y, self.x)
+        self.board.set_moves()
+        self.board.values["K"] += 1
+        self.setBrush(QBrush(QColor("lime")))
+
+
+    def _handle_right_button(self):
+        if (self.y, self.x) in self.board.princesses.keys():
+            self.board.princesses.pop((self.y,self.x))
+            self.board.unset_moves()
+            self.board.values["K"] -= 1
+        self.setBrush(QBrush(self.default_color))
+
+
     def mousePressEvent(self, event):
         """ Обработка клика по клетке """
         if not self._clickable:
@@ -39,16 +54,11 @@ class ChessSquare(QGraphicsRectItem):
             return
 
         if event.button() == Qt.LeftButton:
-            self.board.princesses[(self.y,self.x)] = Princess(self.board, self.y, self.x)
-            self.board.set_moves()
-            self.setBrush(QBrush(QColor("lime")))
+            self._handle_left_button()
             event.accept()
 
         elif event.button() == Qt.RightButton:
-            if (self.y, self.x) in self.board.princesses.keys():
-                self.board.princesses.pop((self.y,self.x))
-                self.board.unset_moves()
-            self.setBrush(QBrush(self.default_color))
+            self._handle_right_button()
             event.accept()
 
         else:
@@ -68,12 +78,14 @@ class ChessSquare(QGraphicsRectItem):
 
 
 class ChessBoard(QGraphicsView):
-    def __init__(self, N):
+    def __init__(self, values):
         super().__init__()
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
+        
+        self.values = values
 
-        self.N = N
+        self.N = self.values["N"]
         self.square_size = 30
 
         self.setFixedSize((self.N+1)*self.square_size, (self.N+1)*self.square_size)
