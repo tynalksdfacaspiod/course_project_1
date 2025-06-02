@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QMainWindow, QWidget
-from layouts.main_window_layouts import MainLayout
+from frontend.layouts.main_window_layouts import MainLayout
 
 
 class MainWindow(QMainWindow):

@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QDialog, QWidget
 
-from layouts.arrange_window_layouts import ArrangeWindowLayout
+from frontend.layouts.arrange_window_layouts import ArrangeWindowLayout
 
 class ArrangeWindow(QDialog):
     def __init__(self, n):

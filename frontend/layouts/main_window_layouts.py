@@ -4,10 +4,10 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import QTimer
 
-from widgets.line_edit import IntLineEdit
-from controllers.main_window.button_controller import ExitButtonController, ArrangeButtonController
-from controllers.main_window.line_edit_controller import IntLineEditController
-from windows.arrange_window import ArrangeWindow
+from frontend.widgets.line_edit import IntLineEdit
+from frontend.controllers.main_window.button_controller import ExitButtonController, ArrangeButtonController
+from frontend.controllers.main_window.line_edit_controller import IntLineEditController
+from frontend.windows.arrange_window import ArrangeWindow
 
 
 class LineEditLayout(QFormLayout):

@@ -1,6 +1,6 @@
 from PySide6.QtCore import QCoreApplication
-from controllers.abstract_button_controller import AbstractButtonController
-from windows.arrange_window import ArrangeWindow
+from frontend.controllers.abstract_button_controller import AbstractButtonController
+from frontend.windows.arrange_window import ArrangeWindow
 
 
 

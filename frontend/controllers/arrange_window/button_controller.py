@@ -1,4 +1,4 @@
-from controllers.abstract_button_controller import AbstractButtonController
+from frontend.controllers.abstract_button_controller import AbstractButtonController
 
 class ConfirmButtonController(AbstractButtonController):
     def __init__(self, parent_window=None):
