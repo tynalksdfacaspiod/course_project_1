@@ -2,28 +2,47 @@ from PySide6.QtWidgets import QDialog
 
 from frontend.layouts.arrange_window_layouts import ArrangeWindowLayout
 from frontend.widgets.chess_board import ChessBoard
-from frontend.other.file import write_input_file, read_input_file
+from frontend.other.file import (
+    write_input_file, read_input_file,
+    write_board_file, read_board_file, is_board_file_exists
+)
 
 class ArrangeWindow(QDialog):
     def __init__(self, values):
         super().__init__()
         self.values = values
-        self.board = ChessBoard(self.values)
+
+        if self._is_board_exists():
+            self.board_config = self._get_board_config()
+            self.board = ChessBoard(self.values, self.board_config)
+        else:
+            self.board = ChessBoard(self.values)
         
         self.setWindowTitle("Окно расстановки фигур")
         self.setFixedSize(1000, 700)
         self.setLayout(ArrangeWindowLayout(parent_window=self))
-        
+
+    
+    def _is_board_exists(self):
+        return is_board_file_exists()
+
+
+    def _get_board_config(self):
+        return read_board_file()
+
 
     def accept(self):
+        moves_coords = self.board.get_moves_coords()
+        princesses_coords = self.board.get_princesses_coords()
+
         write_input_file(self.values)
+        write_board_file(princesses_coords, moves_coords)
+
         print("Accepted")
-        res = read_input_file() 
-        print(res)
+
         super().accept()
 
 
     def reject(self):
-
-        print("Rejected")
         super().reject()
+

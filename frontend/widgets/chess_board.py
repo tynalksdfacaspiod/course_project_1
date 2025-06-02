@@ -78,23 +78,41 @@ class ChessSquare(QGraphicsRectItem):
 
 
 class ChessBoard(QGraphicsView):
-    def __init__(self, values):
+    def __init__(self, values, config=None):
         super().__init__()
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
         
         self.values = values
+        self.config = config
 
         self.N = self.values["N"]
         self.square_size = 30
 
         self.setFixedSize((self.N+1)*self.square_size, (self.N+1)*self.square_size)
         self.setSceneRect(0, 0, self.N*self.square_size, self.N*self.square_size)
+        
 
         self.moves = set()
         self.princesses = TrackingDict()
 
         self.create_board()
+
+        if not self.config is None:
+            self._apply_config()
+
+
+    def _apply_config(self):
+        princesses_coords, moves_coords = self.config
+        
+        for princess_coords in princesses_coords:
+            x = princess_coords[0]
+            y = princess_coords[1]
+            self.princesses[(x,y)] = Princess(self, x, y) 
+
+        self.moves = moves_coords
+        self.set_princesses()
+        self.set_moves()
     
 
     def create_board(self):
@@ -112,6 +130,13 @@ class ChessBoard(QGraphicsView):
         """ Собирает ходы фигур """
         for princess in self.princesses.values():
             self.moves |= princess.moves
+
+
+    def set_princesses(self):
+        for princess_coords in self.princesses.keys():
+            square = self.squares[princess_coords[0] + princess_coords[1]*self.N]
+            square.setBrush(QBrush(QColor("lime")))
+            
 
 
     def set_moves(self):
