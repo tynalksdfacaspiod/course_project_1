@@ -31,6 +31,6 @@ class ArrangeWindowLayout(QVBoxLayout):
         super().__init__()
         self.parent_window = parent_window
 
-        self.chess_board = ChessBoard(self.parent_window.n)
+        self.chess_board = self.parent_window.board
         self.addWidget(self.chess_board, 0, Qt.AlignCenter)
         self.addLayout(ButtonsLayout(parent_window))

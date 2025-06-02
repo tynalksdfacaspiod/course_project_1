@@ -18,7 +18,7 @@ class ArrangeButtonController(AbstractButtonController):
         super().__init__(parent_window)
 
     def handle_click(self):
-        self.arrange_window = ArrangeWindow(self.parent_window.values["n"])
+        self.arrange_window = ArrangeWindow(self.parent_window.values)
         self.arrange_window.exec()
 
 
