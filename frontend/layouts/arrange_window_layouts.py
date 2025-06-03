@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QHBoxLayout, QVBoxLayout,
+    QHBoxLayout, QVBoxLayout, QFrame,
     QPushButton
 )
 
@@ -32,5 +32,7 @@ class ArrangeWindowLayout(QVBoxLayout):
         self.parent_window = parent_window
 
         self.chess_board = self.parent_window.board
-        self.addWidget(self.chess_board, 0, Qt.AlignCenter)
+        self.chess_board.setFrameShape(QFrame.Shape.StyledPanel)
+
+        self.addWidget(self.chess_board)
         self.addLayout(ButtonsLayout(parent_window))

@@ -102,9 +102,8 @@ class ChessBoard(QGraphicsView):
         self.clickable_enabled = clickable_enabled
 
         self.N = self.values["N"]
-        self.square_size = 30
+        self.square_size = self._calculate_square_size()
 
-#        self.setFixedSize((self.N+1)*self.square_size, (self.N+1)*self.square_size)
         self.setSceneRect(0, 0, self.N*self.square_size, self.N*self.square_size)
 
         self.user_princesses = TrackingDict()
@@ -129,6 +128,9 @@ class ChessBoard(QGraphicsView):
                 self.scene.addItem(square)
                 self.squares.append(square)
 
+
+    def _calculate_square_size(self):
+        return self.width()//(self.N+1)
 
     def _apply_config(self):
         princesses, moves = self.config
