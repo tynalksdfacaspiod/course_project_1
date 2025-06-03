@@ -63,6 +63,12 @@ def get_free_squares(princess_coords, free_squares):
     return free_squares.copy() - occupied_squares
 
 
+def add_last_princess(princesses_coords, next_free_squares):
+    global count
+    for free_square in next_free_squares:
+        count += 1
+
+
 def is_result(princesses_coords):
     return len(princesses_coords) == K-1
 
@@ -80,21 +86,22 @@ def solve(initial_free_squares: set, princesses_coords: set = None):
         next_free_squares = get_free_squares(root_free_square, initial_free_squares)
 
         if is_result(new_princesses_coords):
-            return new_princesses_coords, next_free_squares
+            add_last_princess(new_princesses_coords.copy(), next_free_squares.copy())
+            continue
 
-        result = solve(next_free_squares.copy(), new_princesses_coords.copy())
-        if not result is None:
-            return result
+        solve(next_free_squares.copy(), new_princesses_coords.copy())
 
     
     return None
 
 
-N = 8
+N = 14
 K = 3 
-initial_princesses_coords = {(0,1), (6,0), (5,7)}
+count = 0
+initial_princesses_coords = {(3,2), (8,3), (10,12)}
 
 
 empty_board = init_empty_board()
 initial_free_squares = get_initial_free_squares(initial_princesses_coords, empty_board) 
 print(solve(initial_free_squares))
+print(count)
