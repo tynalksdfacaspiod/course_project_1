@@ -1,4 +1,4 @@
-def get_moves(princess_coords) -> set:
+def get_moves(princess_coords, N) -> set:
     """ Функция возвращает ходы переданной фигуры """
     x = princess_coords[0]
     y = princess_coords[1]
@@ -41,21 +41,6 @@ def get_moves(princess_coords) -> set:
     return moves
 
 
-def get_initial_free_squares(princesses_coords, empty_board: set()):
-    occupied_squares = set()
-    for princess_coords in princesses_coords:
-        occupied_squares.add(princess_coords)
-        occupied_squares |= get_moves(princess_coords)
-    
-    return empty_board - occupied_squares
-
-
-def init_empty_board():
-    board = set()
-    for y in range(N):
-        for x in range(N):
-            board.add((x,y))
-    return board
 
 def get_free_squares(princess_coords, free_squares):
     occupied_squares = get_moves(princess_coords)
@@ -64,9 +49,10 @@ def get_free_squares(princess_coords, free_squares):
 
 
 def add_last_princess(princesses_coords, next_free_squares):
-    global count
-    for free_square in next_free_squares:
-        count += 1
+    for next_free_square in next_free_squares:
+        new_princesses_coords = princesses_coords.copy()
+        new_princesses_coords.add(next_free_square)
+        print(initial_princesses_coords | new_princesses_coords)
 
 
 def is_result(princesses_coords):
@@ -93,15 +79,3 @@ def solve(initial_free_squares: set, princesses_coords: set = None):
 
     
     return None
-
-
-N = 14
-K = 3 
-count = 0
-initial_princesses_coords = {(3,2), (8,3), (10,12)}
-
-
-empty_board = init_empty_board()
-initial_free_squares = get_initial_free_squares(initial_princesses_coords, empty_board) 
-print(solve(initial_free_squares))
-print(count)
