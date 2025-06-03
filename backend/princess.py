@@ -1,52 +1,46 @@
-class Princess:
+from abc import ABC, abstractmethod
+from backend.chess_calculator import get_moves
+
+
+class AbstractPrincess(ABC):
     def __init__(self, board, x, y):
         self.board = board
         self.x = x
         self.y = y
-        self.moves = self.get_moves()
+        self.moves = get_moves((self.x,self.y), self.board.N)
+        self._add_moves_to_board()
+
+
+    def _add_moves_to_board(self):
         self.board.moves |= self.moves
 
-    
+
     def on_pop(self):
         self.board.moves -= self.moves
-        self.board.fetch_moves() # Пересобрать ходы, чтобы не удалить пересекающиеся от других фигур
+        self.board.fetch_moves()
 
-    def get_moves(self) -> set:
-        """ Функция возвращает ходы переданной фигуры """
 
-        def get_vertical_moves() -> set:
-            vertical_moves = set()
-            for move in range(1,4):
-                if self.y-move >= 0:
-                    vertical_moves.add((self.x,self.y-move))
-                if self.y+move < self.board.N:
-                    vertical_moves.add((self.x,self.y+move))
-            return vertical_moves
+    @abstractmethod
+    def _set_colors(self):
+        pass
 
-        def get_horizontal_moves() -> set:
-            horizontal_moves = set()
-            for move in range(1,4):
-                if self.x-move >= 0:
-                    horizontal_moves.add((self.x-move,self.y))
-                if self.x+move < self.board.N:
-                    horizontal_moves.add((self.x+move,self.y))
-            return horizontal_moves
-        
-        def get_diagonal_moves() -> set:
-            diagonal_moves = set()
-            for move in range(1,4):
-                # Диагональные ходы "\": с левого верхнего угла к правому нижнему
-                if self.x-move >= 0 and self.y-move >= 0:
-                    diagonal_moves.add((self.x-move,self.y-move))
-                if self.x+move < self.board.N and self.y+move < self.board.N:
-                    diagonal_moves.add((self.x+move,self.y+move))
 
-                # Диагональные ходы "/": с левого нижнего угла к правому верхнему
-                if self.x-move >= 0 and self.y+move < self.board.N:
-                    diagonal_moves.add((self.x-move,self.y+move))
-                if self.x+move < self.board.N and self.y-move >= 0:
-                    diagonal_moves.add((self.x+move,self.y-move))
-            return diagonal_moves
+class UserPrincess(AbstractPrincess):
+    def __init__(self, board, x, y):
+        super().__init__(board, x, y)
 
-        moves = get_vertical_moves() | get_horizontal_moves() | get_diagonal_moves()
-        return moves
+
+    def _set_colors(self):
+        self.figure_color = QColor("lime")
+        self.moves_color = QColor("red")
+
+
+
+class BotPrincess(AbstractPrincess):
+    def __init__(self, board, x, y):
+        super().__init__(board, x, y)
+
+    
+    def _set_colors(self):
+        self.figure_color = QColor("cyan")
+        self.figure_color = QColor("magenta")
