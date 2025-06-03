@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from PySide6.QtGui import QColor
 from backend.chess_calculator import get_moves
 
 
@@ -7,6 +8,8 @@ class AbstractPrincess(ABC):
         self.board = board
         self.x = x
         self.y = y
+        self._set_colors()
+
         self.moves = get_moves((self.x,self.y), self.board.N)
         self._add_moves_to_board()
 
