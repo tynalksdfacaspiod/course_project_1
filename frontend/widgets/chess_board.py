@@ -5,9 +5,9 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QPointF
 from PySide6.QtGui import QBrush, QColor, QPen
 
-from frontend.other.types import TrackingDict
+from backend.other.types import TrackingDict
 
-from backend.princess import Princess
+from backend.princess import UserPrincess
 
 
 
@@ -33,10 +33,12 @@ class ChessSquare(QGraphicsRectItem):
 
 
     def _handle_left_button(self):
-        self.board.princesses[(self.x,self.y)] = Princess(self.board, self.x, self.y)
+        user_princess = UserPrincess(self.board, self.x, self.y)
+        self.board.princesses[(self.x,self.y)] = user_princess 
         self.board.set_moves()
         self.board.values["K"] += 1
-        self.setBrush(QBrush(QColor("lime")))
+
+        self.setBrush(QBrush(user_princess.figure_color))
 
 
     def _handle_right_button(self):
@@ -108,7 +110,7 @@ class ChessBoard(QGraphicsView):
         for princess_coords in princesses_coords:
             x = princess_coords[0]
             y = princess_coords[1]
-            self.princesses[(x,y)] = Princess(self, x, y) 
+            self.princesses[(x,y)] = UserPrincess(self, x, y) 
 
         self.moves = moves_coords
         self.set_princesses()
@@ -133,9 +135,9 @@ class ChessBoard(QGraphicsView):
 
 
     def set_princesses(self):
-        for princess_coords in self.princesses.keys():
+        for princess_coords, princess in self.princesses.items():
             square = self.squares[princess_coords[0] + princess_coords[1]*self.N]
-            square.setBrush(QBrush(QColor("lime")))
+            square.setBrush(QBrush(princess.figure_color))
             
 
 

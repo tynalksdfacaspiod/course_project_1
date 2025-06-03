@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QDialog
 
 from frontend.layouts.arrange_window_layouts import ArrangeWindowLayout
 from frontend.widgets.chess_board import ChessBoard
-from frontend.other.file import (
+from backend.other.file import (
     cleanup,
     write_input_file, read_input_file,
     write_board_file, read_board_file, is_board_file_exists
