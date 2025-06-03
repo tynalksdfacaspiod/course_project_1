@@ -17,10 +17,10 @@ class ArrangeWindow(QDialog):
 
         if self._is_board_exists() and self.values == self._get_cached_values():
             self.board_config = self._get_board_config()
-            self.board = ChessBoard(self.values, self.board_config)
+            self.board = ChessBoard(self.values, self.board_config, clickable_enabled=True)
         else:
             cleanup()
-            self.board = ChessBoard(self.values)
+            self.board = ChessBoard(self.values, clickable_enabled=True)
         
         self.setWindowTitle("Окно расстановки фигур")
         self.setFixedSize(1000, 700)
@@ -53,4 +53,3 @@ class ArrangeWindow(QDialog):
 
     def reject(self):
         super().reject()
-

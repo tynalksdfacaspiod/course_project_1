@@ -12,7 +12,7 @@ from backend.princess import UserPrincess, BotPrincess
 
 
 class ChessSquare(QGraphicsRectItem):
-    def __init__(self, board, x, y, size, default_color):
+    def __init__(self, board, x, y, size, default_color, clickable_enabled):
         super().__init__(0, 0, size, size)
         self.board = board
         self.x = x
@@ -23,7 +23,7 @@ class ChessSquare(QGraphicsRectItem):
         self.setBrush(QBrush(self.default_color))
         self.setPen(QPen(Qt.NoPen))
         
-        self.setClickable(True)
+        self.setClickable(clickable_enabled)
 
     
     def _set_colors(self, default_color):
@@ -92,20 +92,20 @@ class ChessSquare(QGraphicsRectItem):
 
 
 class ChessBoard(QGraphicsView):
-    def __init__(self, values, config=None):
+    def __init__(self, values, config=None, clickable_enabled=True):
         super().__init__()
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
         
         self.values = values
         self.config = config
+        self.clickable_enabled = clickable_enabled
 
         self.N = self.values["N"]
         self.square_size = 30
 
-        self.setFixedSize((self.N+1)*self.square_size, (self.N+1)*self.square_size)
+#        self.setFixedSize((self.N+1)*self.square_size, (self.N+1)*self.square_size)
         self.setSceneRect(0, 0, self.N*self.square_size, self.N*self.square_size)
-        
 
         self.user_princesses = TrackingDict()
         self.bot_princesses = TrackingDict()
@@ -125,7 +125,7 @@ class ChessBoard(QGraphicsView):
         for y in range(self.N):
             for x in range(self.N):
                 color = QColor(240, 217, 181) if (x+y) % 2 else QColor(181, 136, 99)
-                square = ChessSquare(self, x, y, self.square_size, color)
+                square = ChessSquare(self, x, y, self.square_size, color, self.clickable_enabled)
                 self.scene.addItem(square)
                 self.squares.append(square)
 
