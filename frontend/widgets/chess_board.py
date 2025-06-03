@@ -132,17 +132,24 @@ class ChessBoard(QGraphicsView):
                 self.squares.append(square)
 
 
-#    def _apply_config(self):
-#        princesses_coords, moves_coords = self.config
-#        
-#        for princess_coords in princesses_coords:
-#            x = princess_coords[0]
-#            y = princess_coords[1]
-#            self.princesses[(x,y)] = UserPrincess(self, x, y) 
-#
-#        self.moves = moves_coords
-#        self.set_princesses()
-#        self.set_moves()
+    def _apply_config(self):
+        princesses, moves = self.config
+        
+        for user_princess_coords in princesses["user_princesses_coords"]:
+            x = user_princess_coords[0]
+            y = user_princess_coords[1]
+            self.user_princesses[(x,y)] = UserPrincess(self, x, y) 
+
+        for bot_princess_coords in princesses["bot_princesses_coords"]:
+            x = bot_princess_coords[0]
+            y = bot_princess_coords[1]
+            self.bot_princesses[(x,y)] = BotPrincess(self, x, y) 
+        
+        self.user_moves = moves["user_moves"]
+        self.bot_moves = moves["bot_moves"]
+
+        self.set_princesses()
+        self.set_moves()
     
 
     def fetch_moves(self):
@@ -183,9 +190,17 @@ class ChessBoard(QGraphicsView):
                 square.setClickable(True)
 
 
-#    def get_moves_coords(self):
-#        return tuple(self.moves)
-#
-#
-#    def get_princesses_coords(self):
-#        return tuple(self.princesses.keys())
+    def get_princesses_coords(self):
+        return {
+            "user_princesses_coords": tuple(self.user_princesses.keys()),
+            "bot_princesses_coords": tuple(self.bot_princesses.keys())
+        }
+
+
+    def get_moves_coords(self):
+        return {
+            "user_moves": tuple(self.user_moves),
+            "bot_moves": tuple(self.bot_moves)
+        }
+
+
