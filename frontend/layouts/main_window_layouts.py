@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import QTimer
 
 from frontend.widgets.line_edit import IntLineEdit
-from frontend.controllers.main_window.button_controller import ExitButtonController, ArrangeButtonController
+from frontend.controllers.main_window.button_controller import ExitButtonController, ArrangeButtonController, RenderButtonController
 from frontend.controllers.main_window.line_edit_controller import IntLineEditController
 from frontend.windows.arrange_window import ArrangeWindow
 
@@ -33,7 +33,7 @@ class LineEditLayout(QFormLayout):
 
 
 
-class ButtonLayout(QHBoxLayout):
+class ButtonsLayout(QHBoxLayout):
     def __init__(self, parent_window=None):
         super().__init__()
         self.parent_window = parent_window
@@ -50,6 +50,8 @@ class ButtonLayout(QHBoxLayout):
 
         render_button = QPushButton("Отрисовать доску")
         render_button.setEnabled(False)
+        self.render_button_controller = RenderButtonController(self.parent_window)
+        self.render_button_controller.connect_to_button(render_button)
         self.buttons["render_button"] = render_button
 
         exit_button = QPushButton("Выйти")
@@ -68,7 +70,7 @@ class MainLayout(QVBoxLayout):
         self.parent_window = parent_window
 
         self.line_edit_layout = LineEditLayout()
-        self.button_layout = ButtonLayout(self.parent_window)
+        self.button_layout = ButtonsLayout(self.parent_window)
         
         self.addLayout(self.line_edit_layout)
         self.addLayout(self.button_layout)
