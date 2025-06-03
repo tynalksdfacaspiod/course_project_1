@@ -188,10 +188,10 @@ class ChessBoard(QGraphicsView):
     
 
     def unset_moves_and_princesses(self):
-        for square in self.squares:
-            if (square.x, square.y) not in (self.user_moves | self.bot_moves) and (square.x, square.y) not in (self.user_princesses.keys() | self.bot_princesses.keys()):
-                square.setBrush(QBrush(square.default_color))
-                square.setClickable(True)
+        free_squares = self.get_free_squares()
+        for square in free_squares:
+            square.setClickable(True)
+            square.setBrush(QBrush(square.default_color))
 
 
     def get_princesses_coords(self):
@@ -208,3 +208,17 @@ class ChessBoard(QGraphicsView):
         }
 
 
+    def get_free_squares(self):
+        free_squares = set()
+        for square in self.squares:
+            if (square.x, square.y) not in (self.user_moves | self.bot_moves) and (square.x, square.y) not in (self.user_princesses.keys() | self.bot_princesses.keys()):
+                free_squares.add(square)
+        return free_squares
+                
+
+    def get_free_squares_coords(self):
+        free_squares_coords = set()
+        free_squares = self.get_free_squares()
+        for square in free_squares:
+            free_squares_coords.add((square.x,square.y))
+        return free_squares_coords

@@ -35,17 +35,26 @@ class ArrangeWindow(QDialog):
         return read_board_file()
 
 
-    def _get_cached_values(self):
+    def _get_input_file(self):
         return read_input_file()
 
+    def _get_cached_values(self):
+        data = self._get_input_file()
+        cached_values = {
+            "N": data["N"],
+            "L": data["L"],
+            "K": data["K"]
+        }
+        return cached_values
 
     def accept(self):
         self.board.save_princesses_count()
 
         moves_coords = self.board.get_moves_coords()
         princesses_coords = self.board.get_princesses_coords()
+        free_squares_coords = self.board.get_free_squares_coords()
 
-        write_input_file(self.board.values)
+        write_input_file(self.board.values, free_squares_coords)
         write_board_file(princesses_coords, moves_coords)
 
         super().accept()

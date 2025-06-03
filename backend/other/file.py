@@ -8,15 +8,17 @@ def cleanup():
         os.remove(catalog_path + "/" + file)
 
 
-def write_input_file(values: dict):
+def write_input_file(values: dict, free_squares_coords):
+    data = values.copy()
+    data["free_squares_coords"] = tuple(free_squares_coords)
     with open("backend/data/input.json", "w") as fp:
-        json.dump(values, fp)
+        json.dump(data, fp)
 
 
 def read_input_file():
     with open("backend/data/input.json", "r") as fp:
-        values = json.load(fp)
-    return values
+        data = json.load(fp)
+    return data
 
 
 def write_board_file(princesses_coords: dict, moves_coords: dict):
