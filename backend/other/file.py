@@ -39,6 +39,7 @@ def read_board_file():
 
     return formatted_data(princesses), formatted_data(moves)
 
+
 def formatted_data(data: dict):
     for key, value in data.items(): 
         data[key] = set(map(tuple, value))

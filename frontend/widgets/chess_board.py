@@ -42,7 +42,7 @@ class ChessSquare(QGraphicsRectItem):
         self.setFlag(QGraphicsItem.ItemIsSelectable, enabled)
 
 
-    def _handle_left_button(self):
+    def _handle_left_button(self, event):
         if (self.x,self.y) in self.board.user_princesses.keys():
             event.ignore()
             return
@@ -50,7 +50,6 @@ class ChessSquare(QGraphicsRectItem):
         user_princess = UserPrincess(self.board, self.x, self.y)
         self.board.user_princesses[(self.x,self.y)] = user_princess 
         self.board.set_moves()
-        self.board.values["K"] += 1
 
         self.setBrush(QBrush(self.user_princess_color))
 
@@ -59,7 +58,6 @@ class ChessSquare(QGraphicsRectItem):
         if (self.x, self.y) in self.board.user_princesses.keys():
             self.board.user_princesses.pop((self.x,self.y))
             self.board.unset_moves_and_princesses()
-            self.board.values["K"] -= 1
         self.setBrush(QBrush(self.default_color))
 
 
@@ -70,7 +68,7 @@ class ChessSquare(QGraphicsRectItem):
             return
 
         if event.button() == Qt.LeftButton:
-            self._handle_left_button()
+            self._handle_left_button(event)
             event.accept()
 
         elif event.button() == Qt.RightButton:
@@ -151,6 +149,10 @@ class ChessBoard(QGraphicsView):
         self.set_princesses()
         self.set_moves()
     
+
+    def save_princesses_count(self):
+        self.values["K"] = len(self.user_princesses)
+
 
     def fetch_moves(self):
         """ Собирает ходы фигур """

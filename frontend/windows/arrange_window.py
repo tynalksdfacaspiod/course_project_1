@@ -40,10 +40,12 @@ class ArrangeWindow(QDialog):
 
 
     def accept(self):
+        self.board.save_princesses_count()
+
         moves_coords = self.board.get_moves_coords()
         princesses_coords = self.board.get_princesses_coords()
 
-        write_input_file(self.values)
+        write_input_file(self.board.values)
         write_board_file(princesses_coords, moves_coords)
 
         super().accept()
