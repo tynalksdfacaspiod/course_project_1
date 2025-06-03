@@ -1,3 +1,28 @@
+def get_backward_moves(princess_coords):
+    x = princess_coords[0]
+    y = princess_coords[1]
+
+    moves = set()
+    for move in range(1,4):
+        # Vertical moves
+        if y-move >= 0:
+            moves.add((x,y-move))
+
+        # Horizontal moves
+        if x-move >= 0:
+            moves.add((x-move,y))
+            
+            
+        # Diagonal moves
+        if x-move >= 0 and y-move >= 0:
+            moves.add((x-move,y-move))
+
+        if x+move < N and y-move >= 0:
+            moves.add((x+move,y-move))
+
+    return moves
+
+
 def get_forward_moves(princess_coords):
     x = princess_coords[0]
     y = princess_coords[1]
@@ -6,79 +31,75 @@ def get_forward_moves(princess_coords):
     for move in range(1,4):
         # Vertical moves
         if y+move < N:
-            moves.add(x,y+move)
+            moves.add((x,y+move))
 
         # Horizontal moves
         if x+move < N:
-            moves.add(x+move,y)
+            moves.add((x+move,y))
             
             
         # Diagonal moves
         if x+move < N and y+move < N:
-            moves.add(x+move,y+move)
+            moves.add((x+move,y+move))
 
         if x-move >= 0 and y+move < N:
-            moves.add(x-move,y+move)
-
+            moves.add((x-move,y+move))
 
     return moves
 
 
+def get_all_moves(princess_coords):
+    all_moves = set()
+    all_moves |= get_backward_moves(princess_coords) | get_forward_moves(princess_coords)
+    
+    return all_moves
+
+
+def get_initial_free_squares(princesses_coords, empty_board: set()):
+    occupied_squares = set()
+    for princess_coords in princesses_coords:
+        occupied_squares.add(princess_coords)
+        occupied_squares |= get_all_moves(princess_coords)
+    
+    return empty_board - occupied_squares
+
+
+def init_empty_board():
+    board = set()
+    for y in range(N):
+        for x in range(N):
+            board.add((x,y))
+    return board
+
 def get_free_squares(princess_coords, free_squares):
-    moves = get_forward_moves(princess_coord)
-    occupied_squares = moves
+    occupied_squares = get_forward_moves(princess_coords)
     occupied_squares.add(princess_coords)
     return free_squares.copy() - occupied_squares
 
 
-def solve(initial_free_squares, L):
-    def is_result():
-        return len(princesses_coords) == L
-
-    
-    def get_childs(princesses_coords: list, current_princess_coords: tuple, moves: set) -> list:
-        """ Функция возвращает координаты клеток, в которые можно поставить последующие фигуры """
-        childs = []
-
-        # Начинаем с чётвертой по счёту клетки, так как принцесса ходит на три
-        x = current_princess_coords[0]+4
-        y = current_princess_coords[1]
+def is_result(princesses_coords):
+    return len(princesses_coords) == K-1
 
 
-        # Перебираем координаты на наличие свободных клеток, не находящихся под боем других фигур
-        while y < N:
+def solve(initial_free_squares: set, princesses_coords: set = set()):
+    while initial_free_squares:
+        root_free_square = initial_free_squares.pop()
+        princesses_coords.add(root_free_square)
 
-            if x >= N: # Доходим до правого края доски
-                x = 0
-                y += 1
-                continue
 
-            if is_safe((y,x), princesses_coords, moves):
-                childs.append(princesses_coords + [(y,x)])
-
-            x+=1
-        return childs
-
+        next_free_squares = get_free_squares(root_free_square, initial_free_squares)
+        if is_result(princesses_coords):
+            return princesses_coords, len(next_free_squares)
+        solve(next_free_squares.copy(), princesses_coords.copy())
         
-    def is_safe(cell: tuple, princesses_coords: list, moves: set) -> bool:
-        """ Функция проверяет, находится ли клетка под боем других фигур и не занята ли она """
-        if (cell in princesses_coords) or (cell in moves):
-            return False
-        return True
 
 
-    def solve_childs(current_princesses: list, parent_moves: set) -> None:
-        """ Функция расставляет фигуры по безопасным клеткам """
-        nonlocal result
-        current_moves = get_all_moves([current_princesses[-1]]) | parent_moves
-        childs = get_childs(current_princesses, current_princesses[-1], current_moves)
 
-        for child in childs:
-            if is_result(child):
-                # Если один из "детей" является решением, значит и все остальные являются решением
-                # Так как за один раз выставляется только одна фигура
-                result += childs
-                break
-            else:
-                # Если "ребёнок" не является решением, то расставляем фигуры дальше
-                solve_childs(child, current_moves)
+N = 8
+K = 3 
+initial_princesses_coords = {(0,1), (6,0), (5,7)}
+
+
+empty_board = init_empty_board()
+initial_free_squares = get_initial_free_squares(initial_princesses_coords, empty_board) 
+print(solve(initial_free_squares))
