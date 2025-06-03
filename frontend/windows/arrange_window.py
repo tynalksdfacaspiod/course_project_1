@@ -35,7 +35,7 @@ class ArrangeWindow(QDialog):
         return read_board_file()
 
 
-    def _get_input_file(self):
+    def _get_input_data(self):
         return read_input_file()
 
     def _get_cached_values(self):
