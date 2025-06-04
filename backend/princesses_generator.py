@@ -9,10 +9,10 @@ class PrincessesGenerator:
         self.N = config["params"]["N"]
         self.L = config["params"]["L"]
 
-        if config["free_square_coords"] is None:
+        if config["free_squares_coords"] is None:
             self.initial_free_squares = set((x,y) for y in range(self.N) for x in range(self.N))
         else:
-            self.initial_free_squares = config["free_square_coords"]
+            self.initial_free_squares = config["free_squares_coords"]
 
         if config["princesses"]["user_princesses_coords"] is None:
             self.initial_princesses_coords = set()
@@ -45,6 +45,9 @@ class PrincessesGenerator:
 
 
             next_free_squares = self.get_free_squares(root_free_square, initial_free_squares.copy())
+
+            if not next_free_squares and len(new_princesses_coords) < self.L-1:
+                continue
 
             if self.is_result(new_princesses_coords.copy()):
                 for next_free_square in next_free_squares:

@@ -15,7 +15,8 @@ class MainWindow(QMainWindow):
             "moves": {
                 "user_moves": None,
                 "bot_moves": None,
-            }
+            },
+            "free_squares_coords": None
         }
 
         self.setWindowTitle("Chess")

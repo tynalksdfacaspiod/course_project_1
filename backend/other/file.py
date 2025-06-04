@@ -9,12 +9,12 @@ def cleanup():
         os.remove(catalog_path + "/" + file)
 
 
-def write_board_file(params: dict, princesses_coords: dict, moves_coords: dict, free_square_coords: set):
+def write_board_file(params: dict, princesses_coords: dict, moves_coords: dict, free_squares_coords: set):
     data = {
         "params": params,
         "princesses": princesses_coords,
         "moves": moves_coords,
-        "free_square_coords": free_square_coords
+        "free_squares_coords": free_squares_coords
     }
 
     with open("backend/data/board.json", "w") as fp:
@@ -28,13 +28,13 @@ def read_board_file():
     params = data["params"]
     princesses = data["princesses"]
     moves = data["moves"]
-    free_square_coords = data["free_square_coords"]
+    free_squares_coords = data["free_squares_coords"]
 
     formatted_data = {
         "params": params,
         "princesses": formatted_coords_dicts(princesses),
         "moves": formatted_coords_dicts(moves),
-        "free_square_coords": formatted_coords(free_square_coords)
+        "free_squares_coords": formatted_coords(free_squares_coords)
     }
 
     return formatted_data
