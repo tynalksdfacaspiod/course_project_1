@@ -32,11 +32,13 @@ class RenderWindow(QDialog):
         board_config = self.board_config.copy()
 
         board_config["princesses"]["bot_princesses_coords"] = set()
-        board_config["princesses"]["bot_princesses_coords"] = item.princesses_coords
-
         board_config["moves"]["bot_moves"] = set()
+
         for princess_coords in item.princesses_coords:
-            board_config["moves"]["bot_moves"] |= get_moves(princess_coords,N)
+            if princess_coords not in board_config["princesses"]["user_princesses_coords"]:
+                board_config["princesses"]["bot_princesses_coords"] = item.princesses_coords
+                board_config["moves"]["bot_moves"] |= get_moves(princess_coords,N)
+
 
 
         new_board = ChessBoard(board_config, clickable_enabled=False)
