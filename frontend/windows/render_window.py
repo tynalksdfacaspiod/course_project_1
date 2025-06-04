@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QDialog, QListWidgetItem
 
 from frontend.layouts.render_window_layouts import RenderWindowLayout
 from frontend.widgets.chess_board import ChessBoard
-from frontend.widgets.list_item import PrincessListItem
+from frontend.widgets.list_item import PrincessListItem, NoResultListItem
 from frontend.workers.worker import Worker
 from backend.other.file import (
     read_board_file, is_board_config_exists
@@ -32,8 +32,9 @@ class RenderWindow(QDialog):
     def _add_result_to_list(self, princesses_coords):
         self.list_widget.addItem(PrincessListItem(princesses_coords))
 
+    
     def _no_result(self):
-        print("no result")
+        self.list_widget.addItem(NoResultListItem("Невозможно расставить фигуры"))
     
 
     def _get_board_config(self):
