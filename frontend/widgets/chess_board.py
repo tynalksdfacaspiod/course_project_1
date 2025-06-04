@@ -145,13 +145,15 @@ class ChessBoard(QGraphicsView):
                 x = user_princess_coords[0]
                 y = user_princess_coords[1]
                 self.user_princesses[(x,y)] = UserPrincess(self, x, y) 
+            
+            self.user_moves = moves["user_moves"]
 
+        if princesses["bot_princesses_coords"] is not None and moves["bot_moves"] is not None:
             for bot_princess_coords in princesses["bot_princesses_coords"]:
                 x = bot_princess_coords[0]
                 y = bot_princess_coords[1]
                 self.bot_princesses[(x,y)] = BotPrincess(self, x, y) 
 
-            self.user_moves = moves["user_moves"]
             self.bot_moves = moves["bot_moves"]
 
             return 1

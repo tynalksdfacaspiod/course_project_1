@@ -35,8 +35,14 @@ class RenderWindow(QDialog):
         board_config["moves"]["bot_moves"] = set()
 
         for princess_coords in item.princesses_coords:
+            if board_config["princesses"]["user_princesses_coords"] is None:
+                board_config["princesses"]["bot_princesses_coords"].add(princess_coords)
+                board_config["moves"]["bot_moves"] |= get_moves(princess_coords,N)
+                continue
+            
+
             if princess_coords not in board_config["princesses"]["user_princesses_coords"]:
-                board_config["princesses"]["bot_princesses_coords"] = item.princesses_coords
+                board_config["princesses"]["bot_princesses_coords"].add(princess_coords)
                 board_config["moves"]["bot_moves"] |= get_moves(princess_coords,N)
 
 
@@ -67,6 +73,7 @@ class RenderWindow(QDialog):
     def _get_input_data(self):
         return read_input_file()
 
+    
     def setup_thread(self):
         self.thread = QThread()
         self.worker = Worker(self.board_config)
