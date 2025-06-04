@@ -92,19 +92,12 @@ class ChessSquare(QGraphicsRectItem):
 
 
 class ChessBoard(QGraphicsView):
-    def __init__(self, values, config=None, clickable_enabled=True):
+    def __init__(self, config, clickable_enabled):
         super().__init__()
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
         
-        self.values = values
-        self.config = config
         self.clickable_enabled = clickable_enabled
-
-        self.N = self.values["N"]
-        self.square_size = self._calculate_square_size()
-
-        self.setSceneRect(0, 0, self.N*self.square_size, self.N*self.square_size)
 
         self.user_princesses = TrackingDict()
         self.bot_princesses = TrackingDict()
@@ -112,10 +105,19 @@ class ChessBoard(QGraphicsView):
         self.user_moves = set()
         self.bot_moves = set()
 
+        config_applied = self._apply_config(config)
+
+        self.N = self.params["N"]
+        self.square_size = self._calculate_square_size()
+
+        self.setSceneRect(0, 0, self.N*self.square_size, self.N*self.square_size)
+
         self.create_board()
 
-        if not self.config is None:
-            self._apply_config()
+        if config_applied:
+            self.set_moves()
+            self.set_princesses()
+
 
 
     def create_board(self):
@@ -132,28 +134,31 @@ class ChessBoard(QGraphicsView):
     def _calculate_square_size(self):
         return self.width()//(self.N+1)
 
-    def _apply_config(self):
-        princesses, moves = self.config
+    def _apply_config(self, config):
+        self.params = config["params"]
+        princesses = config["princesses"]
+        moves = config["moves"]
         
-        for user_princess_coords in princesses["user_princesses_coords"]:
-            x = user_princess_coords[0]
-            y = user_princess_coords[1]
-            self.user_princesses[(x,y)] = UserPrincess(self, x, y) 
+        if princesses["user_princesses_coords"] is not None and moves["user_moves"] is not None:
+            for user_princess_coords in princesses["user_princesses_coords"]:
+                x = user_princess_coords[0]
+                y = user_princess_coords[1]
+                self.user_princesses[(x,y)] = UserPrincess(self, x, y) 
 
-        for bot_princess_coords in princesses["bot_princesses_coords"]:
-            x = bot_princess_coords[0]
-            y = bot_princess_coords[1]
-            self.bot_princesses[(x,y)] = BotPrincess(self, x, y) 
-        
-        self.user_moves = moves["user_moves"]
-        self.bot_moves = moves["bot_moves"]
+            for bot_princess_coords in princesses["bot_princesses_coords"]:
+                x = bot_princess_coords[0]
+                y = bot_princess_coords[1]
+                self.bot_princesses[(x,y)] = BotPrincess(self, x, y) 
 
-        self.set_princesses()
-        self.set_moves()
-    
+            self.user_moves = moves["user_moves"]
+            self.bot_moves = moves["bot_moves"]
+
+            return 1
+        return 0
+
 
     def save_princesses_count(self):
-        self.values["K"] = len(self.user_princesses)
+        self.params["K"] = len(self.user_princesses)
 
 
     def fetch_moves(self):
@@ -194,6 +199,10 @@ class ChessBoard(QGraphicsView):
             square.setBrush(QBrush(square.default_color))
 
 
+    def get_params(self):
+        return self.params
+
+
     def get_princesses_coords(self):
         return {
             "user_princesses_coords": tuple(self.user_princesses.keys()),
@@ -221,4 +230,4 @@ class ChessBoard(QGraphicsView):
         free_squares = self.get_free_squares()
         for square in free_squares:
             free_squares_coords.add((square.x,square.y))
-        return free_squares_coords
+        return tuple(free_squares_coords)

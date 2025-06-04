@@ -1,6 +1,7 @@
 import json 
 import os
 
+
 def cleanup():
     catalog_path = "backend/data"
     files = os.listdir(catalog_path)
@@ -8,23 +9,12 @@ def cleanup():
         os.remove(catalog_path + "/" + file)
 
 
-def write_input_file(values: dict, free_squares_coords):
-    data = values.copy()
-    data["free_squares_coords"] = tuple(free_squares_coords)
-    with open("backend/data/input.json", "w") as fp:
-        json.dump(data, fp)
-
-
-def read_input_file():
-    with open("backend/data/input.json", "r") as fp:
-        data = json.load(fp)
-    return data
-
-
-def write_board_file(princesses_coords: dict, moves_coords: dict):
+def write_board_file(params: dict, princesses_coords: dict, moves_coords: dict, free_square_coords: set):
     data = {
+        "params": params,
         "princesses": princesses_coords,
-        "moves": moves_coords
+        "moves": moves_coords,
+        "free_square_coords": free_square_coords
     }
 
     with open("backend/data/board.json", "w") as fp:
@@ -35,18 +25,30 @@ def read_board_file():
     with open("backend/data/board.json", "r") as fp:
         data = json.load(fp)
     
+    params = data["params"]
     princesses = data["princesses"]
     moves = data["moves"]
+    free_square_coords = data["free_square_coords"]
+
+    formatted_data = {
+        "params": params,
+        "princesses": formatted_coords_dicts(princesses),
+        "moves": formatted_coords_dicts(moves),
+        "free_square_coords": formatted_coords(free_square_coords)
+    }
+
+    return formatted_data
 
 
-    return formatted_data(princesses), formatted_data(moves)
-
-
-def formatted_data(data: dict):
+def formatted_coords_dicts(data: dict):
     for key, value in data.items(): 
         data[key] = set(map(tuple, value))
     return data 
 
 
-def is_board_file_exists():
+def formatted_coords(coords):
+    return set(map(tuple, coords))
+
+
+def is_board_config_exists():
     return os.path.exists("backend/data/board.json")

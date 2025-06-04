@@ -8,7 +8,7 @@ class AbstractPrincess:
         self.x = x
         self.y = y
 
-        self.moves = get_moves((self.x,self.y), self.board.N)
+        self.moves = get_moves((self.x,self.y), self.board.params["N"])
         self._add_moves_to_board()
 
 

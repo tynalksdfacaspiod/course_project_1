@@ -19,7 +19,7 @@ class ArrangeButtonController(AbstractButtonController):
         super().__init__(parent_window)
 
     def handle_click(self):
-        self.arrange_window = ArrangeWindow(self.parent_window.values)
+        self.arrange_window = ArrangeWindow(self.parent_window.board_config)
         self.arrange_window.exec()
 
 
@@ -30,5 +30,5 @@ class RenderButtonController(AbstractButtonController):
     
 
     def handle_click(self):
-        self.render_window = RenderWindow(self.parent_window.values)
+        self.render_window = RenderWindow(self.parent_window.board_config)
         self.render_window.exec()

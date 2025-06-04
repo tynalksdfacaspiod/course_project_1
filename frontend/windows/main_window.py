@@ -6,10 +6,16 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.values = {
-            "N": 0,
-            "L": 0,
-            "K": 0
+        self.board_config = {
+            "params": {"N": 0, "L": 0, "K": 0},
+            "princesses": {
+                "user_princesses_coords": None,
+                "bot_princesses_coords": None
+            },
+            "moves": {
+                "user_moves": None,
+                "bot_moves": None,
+            }
         }
 
         self.setWindowTitle("Chess")

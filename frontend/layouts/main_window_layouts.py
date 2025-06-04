@@ -83,8 +83,11 @@ class MainLayout(QVBoxLayout):
     
 
     def _toggle_buttons(self):
+        N = self.parent_window.board_config["params"]["N"]
+        L = self.parent_window.board_config["params"]["L"]
+
         for button in self.button_layout.buttons.values():
-            if self.parent_window.values["N"] > 0 and self.parent_window.values["L"] > 0:
+            if N > 0 and L > 0:
                 button.setEnabled(True)
             else:
                 button.setEnabled(False)
@@ -94,12 +97,12 @@ class MainLayout(QVBoxLayout):
         l_line_edit_value = self.line_edit_layout.line_edits["l_line_edit"].text()
 
         if n_line_edit_value:
-            self.parent_window.values["N"] = int(n_line_edit_value)
+            self.parent_window.board_config["params"]["N"] = int(n_line_edit_value)
         else:
-            self.parent_window.values["N"] = 0
+            self.parent_window.board_config["params"]["N"] = 0
             
 
         if l_line_edit_value:
-            self.parent_window.values["L"] = int(l_line_edit_value)
+            self.parent_window.board_config["params"]["L"] = int(l_line_edit_value)
         else:
-            self.parent_window.values["L"] = 0
+            self.parent_window.board_config["params"]["L"] = 0
