@@ -44,8 +44,6 @@ class PrincessesGenerator:
                 yield result
             return
 
-        found_any = False
-        
         while initial_free_squares:
             root_free_square = initial_free_squares.pop()
             new_princesses_coords = princesses_coords.copy()
@@ -58,8 +56,6 @@ class PrincessesGenerator:
                 continue
 
             if self.is_result(new_princesses_coords.copy()):
-                if next_free_squares:
-                    found_any = True
                 for next_free_square in next_free_squares:
                     result = self.initial_princesses_coords | new_princesses_coords | {next_free_square}
                     yield result

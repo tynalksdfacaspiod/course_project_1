@@ -31,6 +31,9 @@ class RenderWindow(QDialog):
 
     def _add_result_to_list(self, princesses_coords):
         self.list_widget.addItem(PrincessListItem(princesses_coords))
+
+    def _no_result(self):
+        print("no result")
     
 
     def _get_board_config(self):
@@ -46,6 +49,7 @@ class RenderWindow(QDialog):
         self.worker.moveToThread(self.thread)
         
         self.worker.item_ready.connect(self._add_result_to_list)
+        self.worker.no_result.connect(self._no_result)
         self.worker.finished.connect(self.thread.quit)
         self.thread.finished.connect(self.thread.deleteLater)
         
