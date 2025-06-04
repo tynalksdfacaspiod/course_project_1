@@ -64,3 +64,4 @@ class PrincessesGenerator:
 
             # Рекурсивный вызов через yield from для поддержки генератора
             yield from self.start_solving(next_free_squares.copy(), new_princesses_coords.copy())
+        return
