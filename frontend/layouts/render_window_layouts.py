@@ -30,5 +30,8 @@ class RenderWindowLayout(QVBoxLayout):
         super().__init__()
         self.parent_window = parent_window
 
-        self.addLayout(MainLayout(self.parent_window))
+        layout = MainLayout(self.parent_window)
+        self.parent_window.list_widget = layout.list_widget
+
+        self.addLayout(layout)
         self.addWidget(QPushButton("Save data"))
