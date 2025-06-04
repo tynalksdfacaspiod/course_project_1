@@ -1,4 +1,4 @@
-from PySide6.QtCore import QThread
+from PySide6.QtCore import QThread, QCoreApplication
 from PySide6.QtWidgets import QDialog, QListWidgetItem
 
 from frontend.layouts.render_window_layouts import RenderWindowLayout
@@ -6,7 +6,7 @@ from frontend.widgets.chess_board import ChessBoard
 from frontend.widgets.list_item import PrincessListItem, NoResultListItem
 from frontend.workers.worker import Worker
 
-from backend.other.file import read_board_file, is_board_config_exists
+from backend.other.file import read_board_file, is_board_config_exists, write_results
 from backend.chess_calculator import get_moves
 
 
@@ -84,4 +84,10 @@ class RenderWindow(QDialog):
 
 
     def accept(self):
-        pass
+        results = [self.list_widget.item(i) for i in range(self.list_widget.count())]
+        if write_results(results):
+            QCoreApplication.quit()
+
+
+    def reject(self):
+        super().reject()
