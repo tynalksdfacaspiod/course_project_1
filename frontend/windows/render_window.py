@@ -5,9 +5,9 @@ from frontend.layouts.render_window_layouts import RenderWindowLayout
 from frontend.widgets.chess_board import ChessBoard
 from frontend.widgets.list_item import PrincessListItem, NoResultListItem
 from frontend.workers.worker import Worker
-from backend.other.file import (
-    read_board_file, is_board_config_exists
-)
+
+from backend.other.file import read_board_file, is_board_config_exists
+from backend.chess_calculator import get_moves
 
 
 
@@ -20,18 +20,35 @@ class RenderWindow(QDialog):
         if is_board_config_exists():
             self.board_config = self._get_board_config()
 
-        self.board = ChessBoard(self.board_config, clickable_enabled=False)
-
         self.setWindowTitle("Окно отрисовки результатов")
         self.setFixedSize(1000,700)
         self.setLayout(RenderWindowLayout(self))
 
         self.setup_thread()
 
+    
+    def render_board(self, item):
+        N = self.board_config["params"]["N"]
+        board_config = self.board_config.copy()
+
+        board_config["princesses"]["bot_princesses_coords"] = set()
+        board_config["princesses"]["bot_princesses_coords"] = item.princesses_coords
+
+        board_config["moves"]["bot_moves"] = set()
+        for princess_coords in item.princesses_coords:
+            board_config["moves"]["bot_moves"] |= get_moves(princess_coords,N)
+
+
+        new_board = ChessBoard(board_config, clickable_enabled=False)
+        main_layout = self.layout().itemAt(0).layout()
+        main_layout.replaceWidget(self.board, new_board)
+
+        self.board = new_board
+
 
     def _add_result_to_list(self, princesses_coords):
         self.list_widget.addItem(PrincessListItem(princesses_coords))
-
+    
     
     def _no_result(self):
         self.list_widget.addItem(NoResultListItem("Невозможно расставить фигуры"))

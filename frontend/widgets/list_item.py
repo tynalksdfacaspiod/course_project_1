@@ -9,9 +9,8 @@ class PrincessListItem(QListWidgetItem):
         super().__init__(str(princesses_coords))
         
         self.princesses_coords = princesses_coords
-
         self.setTextAlignment(Qt.AlignCenter)
-
+        
 
 
 class NoResultListItem(QListWidgetItem):

@@ -3,7 +3,7 @@ from PySide6.QtWidgets import (
     QListWidget, QListWidgetItem,
     QPushButton
 )
-
+from frontend.widgets.chess_board import ChessBoard
 
 
 class MainLayout(QHBoxLayout):
@@ -11,11 +11,12 @@ class MainLayout(QHBoxLayout):
         super().__init__()
         self.parent_window = parent_window
 
-        self.chess_board = self.parent_window.board
+        self.chess_board = ChessBoard(self.parent_window.board_config, clickable_enabled=False)
         self.list_widget = QListWidget()
 
         self.chess_board.setFrameShape(QFrame.Shape.StyledPanel)
         self.list_widget.setFrameShape(QFrame.Shape.StyledPanel)
+        self.list_widget.itemClicked.connect(lambda item: self.parent_window.render_board(item))
 
         self.addWidget(self.chess_board, 2)
         self.addWidget(self.list_widget, 1)
@@ -32,6 +33,7 @@ class RenderWindowLayout(QVBoxLayout):
 
         layout = MainLayout(self.parent_window)
         self.parent_window.list_widget = layout.list_widget
+        self.parent_window.board = layout.chess_board
 
         self.addLayout(layout)
         self.addWidget(QPushButton("Save data"))

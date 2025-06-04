@@ -134,6 +134,7 @@ class ChessBoard(QGraphicsView):
     def _calculate_square_size(self):
         return self.width()//(self.N+1)
 
+
     def _apply_config(self, config):
         self.params = config["params"]
         princesses = config["princesses"]
