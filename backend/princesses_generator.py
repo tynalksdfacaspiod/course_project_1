@@ -8,8 +8,16 @@ class PrincessesGenerator:
     def _load_config(self, config):
         self.N = config["params"]["N"]
         self.L = config["params"]["L"]
-        self.initial_free_squares = config["free_square_coords"]
-        self.initial_princesses_coords = config["princesses"]["user_princesses_coords"]
+
+        if config["free_square_coords"] is None:
+            self.initial_free_squares = set((x,y) for y in range(self.N) for x in range(self.N))
+        else:
+            self.initial_free_squares = config["free_square_coords"]
+
+        if config["princesses"]["user_princesses_coords"] is None:
+            self.initial_princesses_coords = set()
+        else:
+            self.initial_princesses_coords = config["princesses"]["user_princesses_coords"]
 
 
     def get_free_squares(self, princess_coords, free_squares):
