@@ -31,12 +31,20 @@ class PrincessesGenerator:
 
 
     def start_solving(self, initial_free_squares = None, princesses_coords: set = None):
+
         if initial_free_squares is None:
             initial_free_squares = self.initial_free_squares
 
         if princesses_coords is None:
             princesses_coords = set()
 
+        if self.L == 1:
+            for free_square in initial_free_squares:
+                result = free_square 
+                yield result
+            return
+
+        found_any = False
         
         while initial_free_squares:
             root_free_square = initial_free_squares.pop()
@@ -50,10 +58,13 @@ class PrincessesGenerator:
                 continue
 
             if self.is_result(new_princesses_coords.copy()):
+                if next_free_squares:
+                    found_any = True
                 for next_free_square in next_free_squares:
                     result = self.initial_princesses_coords | new_princesses_coords | {next_free_square}
                     yield result
                 continue
+
 
             # Рекурсивный вызов через yield from для поддержки генератора
             yield from self.start_solving(next_free_squares.copy(), new_princesses_coords.copy())
