@@ -40,8 +40,7 @@ class PrincessesGenerator:
 
         if self.L == 1:
             for free_square in initial_free_squares:
-                result = free_square 
-                yield result
+                yield {free_square}
             return
 
         while initial_free_squares:
