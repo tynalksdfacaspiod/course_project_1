@@ -6,6 +6,8 @@ def cleanup():
     catalog_path = "backend/data"
     files = os.listdir(catalog_path)
     for file in files:
+        if file == "output.txt":
+            continue
         os.remove(catalog_path + "/" + file)
 
 
@@ -48,6 +50,13 @@ def formatted_coords_dicts(data: dict):
 
 def formatted_coords(coords):
     return set(map(tuple, coords))
+
+
+def write_results(results):
+    with open("backend/data/output.txt", "w") as fp:
+        for result in results:
+            fp.write(str(result.princesses_coords) + "\n")
+    return 1
 
 
 def is_board_config_exists():
