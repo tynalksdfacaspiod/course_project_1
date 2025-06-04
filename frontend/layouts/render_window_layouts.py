@@ -35,5 +35,9 @@ class RenderWindowLayout(QVBoxLayout):
         self.parent_window.list_widget = layout.list_widget
         self.parent_window.board = layout.chess_board
 
+        self.save_button = QPushButton("Save data")
+        self.save_button.setEnabled(False)
+        self.parent_window.save_button = self.save_button
+        
         self.addLayout(layout)
-        self.addWidget(QPushButton("Save data"))
+        self.addWidget(self.save_button)

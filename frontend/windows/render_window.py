@@ -47,6 +47,10 @@ class RenderWindow(QDialog):
 
         self.board = new_board
 
+    
+    def _unlock_save_button(self):
+        self.save_button.setEnabled(True)
+
 
     def _add_result_to_list(self, princesses_coords):
         self.list_widget.addItem(PrincessListItem(princesses_coords))
@@ -70,6 +74,7 @@ class RenderWindow(QDialog):
         
         self.worker.item_ready.connect(self._add_result_to_list)
         self.worker.no_result.connect(self._no_result)
+        self.thread.finished.connect(self._unlock_save_button)
         self.worker.finished.connect(self.thread.quit)
         self.thread.finished.connect(self.thread.deleteLater)
         
