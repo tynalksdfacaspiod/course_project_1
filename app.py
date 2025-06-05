@@ -6,13 +6,14 @@ from backend.other.file import cleanup
 
 
 
-app = QApplication([])
-app.aboutToQuit.connect(cleanup)
+if __name__ == "__main__":
+    app = QApplication([])
+    app.aboutToQuit.connect(cleanup)
 
-window = MainWindow()
-window.resize(400,800)
-window.show()
+    window = MainWindow()
+    window.resize(400,800)
+    window.show()
 
-cleanup()
+    cleanup()
 
-app.exec()
+    app.exec()
