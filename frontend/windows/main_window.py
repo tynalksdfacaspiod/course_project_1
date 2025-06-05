@@ -3,9 +3,11 @@ from frontend.layouts.main_window_layouts import MainLayout
 
 
 class MainWindow(QMainWindow):
+    """ Основное окно приложения """
     def __init__(self):
         super().__init__()
 
+        # Создание начального конфига доски
         self.board_config = {
             "params": {"N": 0, "L": 0, "K": 0},
             "princesses": {
@@ -19,8 +21,11 @@ class MainWindow(QMainWindow):
             "free_squares_coords": None
         }
 
+        
+        # Установка названия окна
         self.setWindowTitle("Chess")
 
+        # Установка разметки в качестве центрального виджета
         central_widget = QWidget()
         central_widget.setLayout(MainLayout(self))
         self.setCentralWidget(central_widget)
