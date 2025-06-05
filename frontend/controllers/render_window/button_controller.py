@@ -1,9 +1,11 @@
+from typing import Optional
 from frontend.controllers.abstract_button_controller import AbstractButtonController
 
 
 
 class SaveButtonController(AbstractButtonController):
-    def __init__(self, parent_window=None):
+    """ Контроллер для кнопки сохранения результатов """
+    def __init__(self, parent_window: Optional['RenderWindow'] = None):
         super().__init__(parent_window)
 
 
@@ -12,7 +14,8 @@ class SaveButtonController(AbstractButtonController):
         
 
 class CloseButtonController(AbstractButtonController):
-    def __init__(self, parent_window=None):
+    """ Контроллер для кнопки закрытия окна результатов """
+    def __init__(self, parent_window: Optional['RenderWindow'] = None):
         super().__init__(parent_window)
 
 

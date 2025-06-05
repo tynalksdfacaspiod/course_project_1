@@ -1,7 +1,11 @@
+from typing import Optional
 from frontend.controllers.abstract_button_controller import AbstractButtonController
 
+
+
 class ConfirmButtonController(AbstractButtonController):
-    def __init__(self, parent_window=None):
+    """ Контроллер для кнопки подтверждения """
+    def __init__(self, parent_window: Optional['ArrangeWindow'] = None):
         super().__init__(parent_window)
 
     
@@ -11,7 +15,8 @@ class ConfirmButtonController(AbstractButtonController):
 
 
 class CloseButtonController(AbstractButtonController):
-    def __init__(self, parent_window=None):
+    """ Контроллер для кнопки, закрывающей окно """
+    def __init__(self, parent_window: Optional['ArrangeWindow'] = None):
         super().__init__(parent_window)
 
 
