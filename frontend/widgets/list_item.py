@@ -5,17 +5,22 @@ from PySide6.QtGui import QBrush, QColor
 
 
 class PrincessListItem(QListWidgetItem):
-    def __init__(self, princesses_coords):
+    """ Строка списка, хранящая координаты результирующих координат фигур """ 
+    def __init__(self, princesses_coords: set):
         super().__init__(str(princesses_coords))
         
         self.princesses_coords = princesses_coords
+
+        # Установка текста по центру
         self.setTextAlignment(Qt.AlignCenter)
         
 
 
 class NoResultListItem(QListWidgetItem):
-    def __init__(self, text):
+    """ Строка для вывода сообщения об отсутствии результатов """ 
+    def __init__(self, text: str):
         super().__init__(text)
 
+        # Установка текста красного цвета по центру
         self.setTextAlignment(Qt.AlignCenter)
         self.setForeground(QBrush(QColor("red")))
