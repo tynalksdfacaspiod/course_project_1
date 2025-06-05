@@ -1,9 +1,11 @@
-def get_moves(princess_coords, N) -> set:
+def get_moves(princess_coords: tuple, N: int) -> set:
     """ Функция возвращает ходы переданной фигуры """
     x = princess_coords[0]
     y = princess_coords[1]
 
+
     def get_vertical_moves() -> set:
+        """ Получение ходов по вертикали """
         vertical_moves = set()
         for move in range(1,4):
             if y-move >= 0:
@@ -13,6 +15,7 @@ def get_moves(princess_coords, N) -> set:
         return vertical_moves
 
     def get_horizontal_moves() -> set:
+        """ Получение ходов по горизонтали """
         horizontal_moves = set()
         for move in range(1,4):
             if x-move >= 0:
@@ -22,6 +25,7 @@ def get_moves(princess_coords, N) -> set:
         return horizontal_moves
     
     def get_diagonal_moves() -> set:
+        """ Получение ходов по диагоналям """
         diagonal_moves = set()
         for move in range(1,4):
             # Диагональные ходы "\": с левого верхнего угла к правому нижнему
