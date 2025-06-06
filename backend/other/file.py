@@ -58,12 +58,12 @@ def formatted_coords_dicts(data: dict) -> dict:
     return data 
 
 
-def formatted_coords(coords) -> set:
+def formatted_coords(coords: list) -> set:
     """ Функция для форматирования координат """
     return set(map(tuple, coords))
 
 
-def write_results(results) -> bool:
+def write_results(results: list) -> bool:
     """ Функция для записи результатов в файл """
 
     with open("backend/data/output.txt", "w") as fp:
