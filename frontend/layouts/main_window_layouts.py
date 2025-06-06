@@ -97,8 +97,8 @@ class MainLayout(QVBoxLayout):
 
     
 
-    # Метод для переключения состояний кнопок
     def _toggle_buttons(self):
+        """ Метод для переключения состояний кнопок """
         N = self.parent_window.board_config["params"]["N"]
         L = self.parent_window.board_config["params"]["L"]
 
@@ -109,8 +109,8 @@ class MainLayout(QVBoxLayout):
                 button.setEnabled(False)
 
 
-    # Метод для установки значений в конфиг доски
     def _set_values(self):
+        """ Метод для установки значений в конфиг доски """
         n_line_edit_value = self.line_edit_layout.line_edits["n_line_edit"].text()
         l_line_edit_value = self.line_edit_layout.line_edits["l_line_edit"].text()
 
