@@ -200,7 +200,7 @@ class ChessBoard(QGraphicsView):
                     self.bot_princesses[(x,y)] = BotPrincess(self, x, y) 
     
                 self.bot_moves = moves["bot_moves"]
-             return True
+            return True
         return False
 
 
